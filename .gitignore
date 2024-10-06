@@ -1,0 +1,13 @@
+# Ignore virtual environments
+venv/
+.env/
+env/
+
+# Ignore CSV files
+*.csv
+
+# Ignore PyCharm specific files
+.idea/
+
+#Ignore "images" folder
+images
