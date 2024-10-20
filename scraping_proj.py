@@ -27,7 +27,7 @@ def write_csv_header(file_name):
         with open(file_name, "w", encoding="utf-8", newline='') as csv_file:
             writer = csv.writer(csv_file)
             writer.writerow(HEADER)
-    except IOError as e:
+    except OSError as e:
         print(f"Error writing CSV header to {file_name}: {e}")
 
 
@@ -37,7 +37,7 @@ def write_csv_row(file_name, row):
         with open(file_name, "a", encoding="utf-8", newline='') as csv_file:
             writer = csv.writer(csv_file)
             writer.writerow(row)
-    except IOError as e:
+    except OSError as e:
         print(f"Error writing to CSV {file_name}: {e}")
 
 
@@ -107,15 +107,18 @@ def create_images_folder():
 
 def save_image(image_url, image_name):
     """Downloads and saves the image to the 'images' folder."""
-    image_name = re.sub(r'[<>:"/\\|?*]', '', image_name)  # Remove invalid characters for file name
+    image_name = re.sub(r"[’“”<>:\"/\\|?*'#]", ' ', image_name)  # Remove invalid characters for file name
     image_path = os.path.join("images", image_name + ".jpg")
 
     try:
         response = requests.get(image_url, stream=True)
         if response.status_code == 200:
             response.raw.decode_content = True
-            with open(image_path, "wb") as file:
-                file.write(response.content)
+            try:
+                with open(image_path, "wb") as file:
+                    file.write(response.content)
+            except OSError as e:
+                print(f"Error saving image {image_url}: {e}")
         else:
             print(f"Failed to download image: {image_url}. Status code: {response.status_code}")
     except RequestException as e:
