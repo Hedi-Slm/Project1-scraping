@@ -1,4 +1,6 @@
 import re
+import time
+
 import requests
 import csv
 from bs4 import BeautifulSoup as bs
@@ -196,5 +198,7 @@ def main():
 
 
 if __name__ == "__main__":
+    time_start = time.perf_counter()
     main()
-
+    time_end = time.perf_counter()
+    print(f"Total time: {time_end - time_start:.2f} seconds")

@@ -9,5 +9,6 @@ env/
 # Ignore PyCharm specific files
 .idea/
 
-#Ignore "images" folder
+#Ignore "images" and "csv" folder
 images
+csv
