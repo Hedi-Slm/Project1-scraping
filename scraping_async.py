@@ -1,4 +1,5 @@
 import asyncio
+import csv
 import re
 import aiofiles
 import httpx
@@ -232,10 +233,11 @@ async def write_csv(category_name, information_rows):
     csv_path = os.path.join("csv", csv_name)
 
     async with aiofiles.open(csv_path, "w", encoding="utf-8", newline='') as csv_file:
+        writer = csv.writer(csv_file)
         try:
-            await csv_file.write(",".join(HEADER) + "\n")
+            await writer.writerow(HEADER)
             for row in information_rows:
-                await csv_file.write(",".join(row) + "\n")
+                await writer.writerow(row)
         except OSError as e:
             print(f"Error writing CSV {csv_name}: {e}")
 
